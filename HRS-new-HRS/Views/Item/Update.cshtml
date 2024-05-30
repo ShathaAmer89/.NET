@@ -1,0 +1,74 @@
+﻿@model HouseRenting.ViewModels.ItemImagesViewModel
+
+<h2>Update this House</h2>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="Update" class="col-md-7 col-lg-5 offset-md-3 offset-lg-4">
+    <input type="hidden" asp-for="Item.ItemId" />
+
+    <div class="form-group">
+        <label asp-for="Item.Category">Category</label>
+        <select asp-for="Item.Category" class="form-control bg-light">
+            <option value="House">House</option>
+            <option value="Dorm">Dorm</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Semi-detached house">Semi-detached house</option>
+            <option value="Cottage">Cottage</option>
+            <option value="Townhouses">Townhouses</option>
+            <option value="Other">Other</option>
+        </select>
+        <span asp-validation-for="Item.Category" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Item.Location">Location</label>
+        <input asp-for="Item.Location" class="form-control bg-light" />
+        <span asp-validation-for="Item.Location" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Item.Rooms">Rooms</label>
+        <input asp-for="Item.Rooms" class="form-control bg-light" />
+        <span asp-validation-for="Item.Rooms" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Item.Area">Area</label>
+        <input asp-for="Item.Area" class="form-control bg-light" />
+        <span asp-validation-for="Item.Area" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Item.Renting">Renting</label>
+        <input asp-for="Item.Renting" class="form-control bg-light" />
+        <span asp-validation-for="Item.Renting" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Item.Description">Description</label>
+        <input asp-for="Item.Description" class="form-control bg-light" />
+        <span asp-validation-for="Item.Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Item.ImageUrl">ImageUrl</label>
+        <input asp-for="Item.ImageUrl" class="form-control bg-light" />
+        <span asp-validation-for="Item.ImageUrl" class="text-danger"></span>
+    </div>
+
+    <div id="additionalImages" class="form-group">
+        @for (int i = 0; i < 3; i++)
+        {
+            <div class="form-group">
+                <label asp-for="Images[i].ImageUrl">Other Image @(i + 1)</label>
+                <input asp-for="Images[i].ImageUrl" class="form-control" />
+                <span asp-validation-for="Images[i].ImageUrl" class="text-danger"></span>
+            </div>
+        }
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-outline-primary">Save</button>
+    <a asp-action="Table" class="btn btn-outline-warning">Cancel</a>
+</form>

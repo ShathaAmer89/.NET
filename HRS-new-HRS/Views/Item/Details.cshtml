@@ -1,0 +1,111 @@
+﻿@model Item
+<!-- ======= Portfolio Details Section ======= -->
+<section id="portfolio-details" class="portfolio-details">
+    <div class="container">
+
+        <div class="row gy-4">
+
+            <div class="col-lg-7 h-auto">
+                <div id="carouselExampleIndicators" class="carousel slide">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel slide carousel-fade">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="@Model.ImageUrl" class="img-fluid w-100" alt="...">
+                        </div>
+                        @for (int i = 0; i < Model.Images.Count; i++)
+                        {
+                            @if (Model.Images[i].ImageUrl!=null){
+                            <div class="carousel-item">
+                                    <img src="@Model.Images[i].ImageUrl" class="img-fluid w-100" alt="Image @(i + 1)">
+                            </div>
+                            }
+                        }
+                    </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="portfolio-info">
+                    <h3>Item @Model.ItemId</h3>
+                    <ul>
+                        <li><strong>Category</strong>: @Model.Category</li>
+                        <li><strong>Renting</strong>: @Model.Renting.ToString("0.00 NOK")</li>
+                        <li><strong>House Location</strong>: @Model.Location</li>
+                        
+                    </ul>
+                
+                <div class="">
+                    
+                    <p><a href="/Item/Table">Back to Table View</a></p>
+                    <p><a href="/Item/Grid">Back to Grid View</a></p>
+                    <p>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Update" asp-route-id="@Model.ItemId" class="btn btn-outline-success">Update</a>
+                            <a asp-action="Delete" asp-route-id="@Model.ItemId" class="btn btn-outline-danger">Delete</a>
+                        }
+                    </p>
+                </div>
+                <h3>Description</h3>
+                <div class="row gx-5"><h5>@Model.Description</h5></div>
+                <div>
+                    @if (Model.IsBooked == true)
+                    {
+                        <div class="col-3">
+                            <a class=" btn btn-primary"
+                               asp-controller="Booking" asp-route-itemId="@Model.ItemId"
+                               asp-action="CreateBookingItem">New Booking</a>
+                        </div>
+
+                        <br />
+                        <script>
+                            async function updateBookingPeriods() {
+                                var itemId = @Html.Raw(Json.Serialize(Model.ItemId));
+                                // AJAX request to the server
+                                var response = await fetch(`/Booking/BookingPeriods?itemId=${itemId}`);
+
+                                if (response.ok) {
+                                    var bookingPeriods = await response.text();
+                                    document.getElementById('bookingPeriods').innerText = bookingPeriods;
+                                } else {
+                                    console.error('Failed to fetch booking periods');
+                                }
+                            }
+                            // Call the function on page load
+                            document.addEventListener('DOMContentLoaded', function () {
+                                updateBookingPeriods();
+                            });
+                        </script>
+                        <p class="text-danger">@($"{'\u26A0'}")</p>
+                        <div class="bg-light text-primary d-block" id="bookingPeriods"></div>
+
+                    }
+                    else
+                    {
+
+                        <a class="col-3 btn btn-primary mt-3"
+                           asp-controller="Booking" asp-route-itemId="@Model.ItemId"
+                           asp-action="CreateBookingItem">Booking</a>
+
+                    }
+                </div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+</section>
